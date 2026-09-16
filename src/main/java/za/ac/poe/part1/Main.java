@@ -2,19 +2,13 @@ package za.ac.poe.part1;
 
 import java.util.Scanner;
 
-/**
- * Main.java
- *
- * Console entry point for Part 1 - Registration and login feature.
- * No GUI / JOptionPane is used, per the assignment requirements.
- */
+
 public class Main {
 
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
         Login login = new Login();
 
-        System.out.println("=====================================");
         System.out.println("        USER REGISTRATION");
         System.out.println("=====================================");
 
