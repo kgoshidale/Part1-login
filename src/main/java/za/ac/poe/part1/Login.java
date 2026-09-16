@@ -1,15 +1,5 @@
 package za.ac.poe.part1;
 
-/**
- * Login.java
- *
- * Handles user registration and login for Part 1 of the PoE.
- *
- * Regex validation approach for the cell phone checker was informed by
- * general guidance on Java regular expressions for phone number validation
- * (Baeldung, "Validating Phone Numbers with Java", https://www.baeldung.com/java-validate-phone-numbers).
- * Adjust this reference to match whatever source you actually consulted.
- */
 public class Login {
 
     private String firstName;
@@ -23,10 +13,7 @@ public class Login {
     public Login() {
     }
 
-    /**
-     * Checks that the username contains an underscore and is no
-     * more than five characters long.
-     */
+
     public boolean checkUserName(String username) {
         if (username == null) {
             return false;
@@ -34,10 +21,7 @@ public class Login {
         return username.length() <= 5 && username.contains("_");
     }
 
-    /**
-     * Checks that the password is at least 8 characters long and
-     * contains a capital letter, a number, and a special character.
-     */
+
     public boolean checkPasswordComplexity(String password) {
         if (password == null) {
             return false;
@@ -46,11 +30,6 @@ public class Login {
         return password.matches(regex);
     }
 
-    /**
-     * Checks that the cell phone number contains the South African
-     * international country code (+27) followed by the subscriber
-     * number, which must be no more than ten characters long.
-     */
     public boolean checkCellPhoneNumber(String cellPhoneNumber) {
         if (cellPhoneNumber == null) {
             return false;
@@ -59,10 +38,6 @@ public class Login {
         return cellPhoneNumber.matches(regex);
     }
 
-    /**
-     * Validates and registers a new user, returning the appropriate
-     * message for whichever condition applies.
-     */
     public String registerUser(String firstName, String lastName, String username,
                                 String password, String cellPhoneNumber) {
         if (!checkUserName(username)) {
@@ -91,10 +66,6 @@ public class Login {
                 + "Cell number successfully captured. You have been registered successfully.";
     }
 
-    /**
-     * Verifies that the entered username and password match the
-     * details captured at registration.
-     */
     public boolean loginUser(String enteredUsername, String enteredPassword) {
         loggedIn = enteredUsername != null
                 && enteredPassword != null
@@ -103,10 +74,6 @@ public class Login {
         return loggedIn;
     }
 
-    /**
-     * Returns the appropriate message depending on the outcome of
-     * the last call to loginUser().
-     */
     public String returnLoginStatus() {
         if (loggedIn) {
             return "Welcome " + firstName + ", " + lastName + " it is great to see you again.";
@@ -114,7 +81,6 @@ public class Login {
         return "Username or password incorrect, please try again.";
     }
 
-    // Getters, useful for testing and for the console app.
     public String getFirstName() {
         return firstName;
     }
