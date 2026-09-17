@@ -10,7 +10,6 @@ public class Main {
         Login login = new Login();
 
         System.out.println("        USER REGISTRATION");
-        System.out.println("=====================================");
 
         System.out.print("Enter first name: ");
         String firstName = scanner.nextLine();
