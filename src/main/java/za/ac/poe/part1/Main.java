@@ -32,7 +32,6 @@ public class Main {
 
         if (registrationResult.contains("registered successfully")) {
             System.out.println();
-            System.out.println("=====================================");
             System.out.println("           USER LOGIN");
             System.out.println("=====================================");
 
