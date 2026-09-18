@@ -81,19 +81,5 @@ public class Login {
         return "Username or password incorrect, please try again.";
     }
 
-    public String getFirstName() {
-        return firstName;
-    }
 
-    public String getLastName() {
-        return lastName;
-    }
-
-    public String getUsername() {
-        return username;
-    }
-
-    public String getCellPhoneNumber() {
-        return cellPhoneNumber;
-    }
 }
