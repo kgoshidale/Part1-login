@@ -33,12 +33,10 @@ public class Message {
         return id.toString();
     }
 
-    // Ensures the message ID is not more than ten characters
     public Boolean checkMessageID() {
         return messageID.length() <= 10;
     }
 
-    // Ensures recipient cell number is no more than ten characters and starts with a code (e.g. "+27...")
     public String checkRecipientCell(String recipient) {
         if (recipient.length() <= 12 && recipient.startsWith("+")) {
             return "Cell phone number successfully captured.";
@@ -47,7 +45,6 @@ public class Message {
                 + "Please correct the number and try again.";
     }
 
-    // Builds the hash: first two digits of ID + ":" + message number + ":" + first & last word, all caps
     public String createMessageHash() {
         String idPrefix = messageID.substring(0, 2);
         String[] words = messageText.trim().split("\\s+");
@@ -57,7 +54,7 @@ public class Message {
         return hash.toUpperCase();
     }
 
-    // Lets the user choose to send, store, or disregard the message
+
     public String sentMessage(String choice) {
         switch (choice) {
             case "0":
@@ -76,7 +73,7 @@ public class Message {
         }
     }
 
-    // Returns all messages sent while the program is running
+
     public static String printMessages() {
         StringBuilder sb = new StringBuilder();
         for (String msg : sentMessages) {
@@ -85,31 +82,13 @@ public class Message {
         return sb.toString();
     }
 
-    // Returns the total number of messages sent
+
     public static int returnTotalMessages() {
         return totalMessagesSent;
     }
 
-    // Research task: store message details in a JSON file
+
     public void storeMessage() {
-        // Example using org.json or Gson — add the dependency in your pom.xml, e.g.:
-        // implementation 'com.google.code.gson:gson:2.10.1' (if using Gradle)
-        // or org.json / Gson via Maven if using Maven
-        //
-        // Simplest approach with org.json (Maven dependency: org.json:json:20231013):
-        //
-        // JSONObject obj = new JSONObject();
-        // obj.put("messageID", messageID);
-        // obj.put("messageHash", messageHash);
-        // obj.put("recipient", recipient);
-        // obj.put("message", messageText);
-        //
-        // try (FileWriter file = new FileWriter("messages.json", true)) {
-        //     file.write(obj.toString());
-        //     file.write(System.lineSeparator());
-        // } catch (IOException e) {
-        //     e.printStackTrace();
-        // }
     }
 
     public String getMessageID() { return messageID; }
