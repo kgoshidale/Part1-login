@@ -1,3 +1,5 @@
+package za.ac.poe.part1;
+
 import java.util.Scanner;
 
 public class Main {
@@ -38,13 +40,11 @@ public class Main {
             System.out.print("Enter password: ");
             String loginPassword = scanner.nextLine();
 
-            login.loginUser(loginUsername, loginPassword);
-            String loginStatus = login.returnLoginStatus();
+            boolean loginSuccess = login.loginUser(loginUsername, loginPassword);
             System.out.println();
-            System.out.println(loginStatus);
+            System.out.println(login.returnLoginStatus());
 
-            // Only move into QuickChat if login actually succeeded
-            if (loginStatus.toLowerCase().contains("successful")) {
+            if (loginSuccess) {
                 runQuickChat(scanner);
             }
         }
@@ -52,7 +52,6 @@ public class Main {
         scanner.close();
     }
 
-    // ===== Part 2: QuickChat messaging menu =====
     private static void runQuickChat(Scanner scanner) {
         System.out.println();
         System.out.println("Welcome to QuickChat.");
