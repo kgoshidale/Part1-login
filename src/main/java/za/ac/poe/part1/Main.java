@@ -1,7 +1,4 @@
-package za.ac.poe.part1;
-
 import java.util.Scanner;
-
 
 public class Main {
 
@@ -42,10 +39,95 @@ public class Main {
             String loginPassword = scanner.nextLine();
 
             login.loginUser(loginUsername, loginPassword);
+            String loginStatus = login.returnLoginStatus();
             System.out.println();
-            System.out.println(login.returnLoginStatus());
+            System.out.println(loginStatus);
+
+            // Only move into QuickChat if login actually succeeded
+            if (loginStatus.toLowerCase().contains("successful")) {
+                runQuickChat(scanner);
+            }
         }
 
         scanner.close();
+    }
+
+    // ===== Part 2: QuickChat messaging menu =====
+    private static void runQuickChat(Scanner scanner) {
+        System.out.println();
+        System.out.println("Welcome to QuickChat.");
+
+        System.out.print("How many messages would you like to enter? ");
+        int totalToEnter = Integer.parseInt(scanner.nextLine());
+        int messagesEntered = 0;
+        int messageCounter = 0;
+
+        boolean running = true;
+        while (running) {
+            System.out.println("\n1) Send Messages");
+            System.out.println("2) Show recently sent messages");
+            System.out.println("3) Quit");
+            System.out.print("Choose an option: ");
+            String choice = scanner.nextLine();
+
+            switch (choice) {
+                case "1":
+                    if (messagesEntered >= totalToEnter) {
+                        System.out.println("You have reached your message limit.");
+                        break;
+                    }
+
+                    System.out.print("Recipient: ");
+                    String recipient = scanner.nextLine();
+
+                    System.out.print("Message: ");
+                    String text = scanner.nextLine();
+
+                    if (text.length() > 250) {
+                        System.out.println("Please enter a message of less than 250 characters.");
+                        break;
+                    }
+
+                    Message msg = new Message(recipient, text, messageCounter);
+                    messageCounter++;
+
+                    System.out.println("\n0) Send Message");
+                    System.out.println("1) Disregard Message");
+                    System.out.println("2) Store Message to send later");
+                    System.out.print("Choose an option: ");
+                    String action = scanner.nextLine();
+
+                    switch (action) {
+                        case "0":
+                            msg.send();
+                            System.out.println("Message successfully sent");
+                            msg.printFullDetails();
+                            break;
+                        case "1":
+                            msg.disregard();
+                            System.out.println("Press 0 to delete the message");
+                            break;
+                        case "2":
+                            msg.store();
+                            System.out.println("Message successfully stored");
+                            break;
+                    }
+
+                    messagesEntered++;
+                    break;
+
+                case "2":
+                    System.out.println("Coming Soon.");
+                    break;
+
+                case "3":
+                    running = false;
+                    System.out.println("Total messages sent: " + Message.getTotalMessagesSent());
+                    break;
+
+                default:
+                    System.out.println("Invalid option.");
+            }
+        }
     }
 }
