@@ -64,7 +64,7 @@ public class Main {
         boolean running = true;
         while (running) {
             System.out.println("\n1) Send Messages");
-            System.out.println("2) Show recently sent messages (Coming soon)");
+            System.out.println("2) Show recently sent messages");
             System.out.println("3) Quit");
             System.out.print("Choose an option: ");
             String choice = scanner.nextLine();
@@ -79,6 +79,13 @@ public class Main {
                     System.out.print("Recipient: ");
                     String recipient = scanner.nextLine();
 
+                    Message tempCheck = new Message(recipient, "placeholder", messageCounter);
+                    String cellCheckResult = tempCheck.checkRecipientCell(recipient);
+                    System.out.println(cellCheckResult);
+                    if (!cellCheckResult.contains("successfully")) {
+                        break;
+                    }
+
                     System.out.print("Message: ");
                     String text = scanner.nextLine();
 
@@ -90,38 +97,33 @@ public class Main {
                     Message msg = new Message(recipient, text, messageCounter);
                     messageCounter++;
 
+                    System.out.println("Message ID generated: " + msg.getMessageID());
+
                     System.out.println("\n0) Send Message");
                     System.out.println("1) Disregard Message");
                     System.out.println("2) Store Message to send later");
                     System.out.print("Choose an option: ");
                     String action = scanner.nextLine();
 
-                    switch (action) {
-                        case "0":
-                            msg.send();
-                            System.out.println("Message successfully sent");
-                            msg.printFullDetails();
-                            break;
-                        case "1":
-                            msg.disregard();
-                            System.out.println("Press 0 to delete the message");
-                            break;
-                        case "2":
-                            msg.store();
-                            System.out.println("Message successfully stored");
-                            break;
+                    String result = msg.sentMessage(action);
+                    System.out.println(result);
+
+                    if (action.equals("0")) {
+                        System.out.println(msg.toString());
+                    } else if (action.equals("2")) {
+                        msg.storeMessage();
                     }
 
                     messagesEntered++;
                     break;
 
                 case "2":
-                    System.out.println("Coming Soon.");
+                    System.out.println(Message.printMessages());
                     break;
 
                 case "3":
                     running = false;
-                    System.out.println("Total messages sent: " + Message.getTotalMessagesSent());
+                    System.out.println("Total messages sent: " + Message.returnTotalMessages());
                     break;
 
                 default:
