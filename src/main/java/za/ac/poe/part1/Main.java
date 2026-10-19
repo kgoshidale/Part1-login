@@ -64,7 +64,7 @@ public class Main {
         boolean running = true;
         while (running) {
             System.out.println("\n1) Send Messages");
-            System.out.println("2) Show recently sent messages");
+            System.out.println("2) Show recently sent messages (Coming soon)");
             System.out.println("3) Quit");
             System.out.print("Choose an option: ");
             String choice = scanner.nextLine();
