@@ -40,7 +40,7 @@ public class Message {
 
     // Ensures recipient cell number is no more than ten characters and starts with a code (e.g. "+27...")
     public String checkRecipientCell(String recipient) {
-        if (recipient.length() <= 10 && recipient.startsWith("+")) {
+        if (recipient.length() <= 12 && recipient.startsWith("+")) {
             return "Cell phone number successfully captured.";
         }
         return "Cell phone number is incorrectly formatted or does not contain an international code. "
