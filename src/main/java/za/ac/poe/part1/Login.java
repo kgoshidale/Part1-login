@@ -1,6 +1,7 @@
 package za.ac.poe.part1;
 
 
+// Handles user registration and login, including the validation rules
 public class Login {
 
     private String username;
@@ -9,10 +10,12 @@ public class Login {
     private String firstName;
     private String lastName;
 
+    // Username must contain an underscore and be at most five characters
     public boolean checkUserName(String username) {
         return username != null && username.contains("_") && username.length() <= 5;
     }
 
+    // Password needs 8+ characters, a capital letter, a number and a special character
     public boolean checkPasswordComplexity(String password) {
         return password != null
                 && password.length() >= 8
@@ -21,10 +24,12 @@ public class Login {
                 && password.matches(".*[^A-Za-z0-9].*");
     }
 
+    // Cell number must start with + and an international code
     public boolean checkCellPhoneNumber(String cell) {
         return cell != null && cell.matches("^\\+\\d{1,3}\\d{1,10}$");
     }
 
+    // Validates every field and saves the user if all are correct
     public String registerUser(String firstName, String lastName, String username,
                                String password, String cell) {
         if (!checkUserName(username)) {
@@ -47,16 +52,19 @@ public class Login {
                 + "Cell phone number successfully added. User registered successfully.";
     }
 
+    // Returns first name and last name together
     public String getFullName() {
         return firstName + " " + lastName;
     }
 
+    // Checks the login details against the registered user
     public boolean loginUser(String username, String password) {
         return this.username != null
                 && this.username.equals(username)
                 && this.password.equals(password);
     }
 
+    // Welcome message for a successful login, error message otherwise
     public String returnLoginStatus(boolean loggedIn) {
         return loggedIn
                 ? "Welcome " + firstName + " " + lastName + ", it is great to see you again."
