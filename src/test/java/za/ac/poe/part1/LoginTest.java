@@ -1,16 +1,11 @@
 package za.ac.poe.part1;
 
+
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
 
-/**
- * LoginTest.java
- * Unit tests using the exact test data provided in the assignment brief.
- */
 class LoginTest {
 
     private Login login;
@@ -20,87 +15,111 @@ class LoginTest {
         login = new Login();
     }
 
-    // ----- Username tests -----
-
+    // ---- Username ----
     @Test
-    void testUsernameCorrectlyFormatted() {
+    void usernameCorrectlyFormatted() {
         assertTrue(login.checkUserName("kyl_1"));
     }
 
     @Test
-    void testUsernameIncorrectlyFormatted() {
-        assertFalse(login.checkUserName("kylelllllll"));
+    void usernameIncorrectlyFormattedNoUnderscore() {
+        assertFalse(login.checkUserName("kyle1"));
     }
 
-    // ----- Password tests -----
-
     @Test
-    void testPasswordMeetsComplexityRequirements() {
+    void usernameIncorrectlyFormattedTooLong() {
+        assertFalse(login.checkUserName("kyle_smith"));
+    }
+
+    // ---- Password complexity ----
+    @Test
+    void passwordMeetsComplexity() {
         assertTrue(login.checkPasswordComplexity("Ch&&sec@ke99!"));
     }
 
     @Test
-    void testPasswordDoesNotMeetComplexityRequirements() {
-        assertFalse(login.checkPasswordComplexity("password"));
+    void passwordTooShort() {
+        assertFalse(login.checkPasswordComplexity("Ab1!"));
     }
 
-    // ----- Cell phone tests -----
+    @Test
+    void passwordNoCapital() {
+        assertFalse(login.checkPasswordComplexity("password1!"));
+    }
 
     @Test
-    void testCellPhoneNumberCorrectlyFormatted() {
+    void passwordNoNumber() {
+        assertFalse(login.checkPasswordComplexity("Password!!"));
+    }
+
+    @Test
+    void passwordNoSpecialCharacter() {
+        assertFalse(login.checkPasswordComplexity("Password12"));
+    }
+
+    // ---- Cell phone number ----
+    @Test
+    void cellNumberCorrectlyFormatted() {
         assertTrue(login.checkCellPhoneNumber("+27838968976"));
     }
 
     @Test
-    void testCellPhoneNumberIncorrectlyFormatted() {
-        assertFalse(login.checkCellPhoneNumber("08966553"));
-    }
-
-    // ----- registerUser() message tests -----
-
-    @Test
-    void testRegisterUserReturnsSuccessMessage() {
-        String result = login.registerUser("Kyle", "Naidoo", "kyl_1", "Ch&&sec@ke99!", "+27838968976");
-        assertTrue(result.contains("registered successfully"));
+    void cellNumberMissingInternationalCode() {
+        assertFalse(login.checkCellPhoneNumber("0838968976"));
     }
 
     @Test
-    void testRegisterUserReturnsUsernameErrorMessage() {
-        String result = login.registerUser("Kyle", "Naidoo", "kylelllllll", "Ch&&sec@ke99!", "+27838968976");
-        assertTrue(result.contains("Username is not correctly formatted"));
+    void cellNumberContainsLetters() {
+        assertFalse(login.checkCellPhoneNumber("+2783abc8976"));
+    }
+
+    // ---- Registration messages ----
+    @Test
+    void registerUserSuccess() {
+        assertEquals("Username successfully captured. Password successfully captured. "
+                        + "Cell phone number successfully added. User registered successfully.",
+                login.registerUser("Kyle", "Smith", "kyl_1", "Ch&&sec@ke99!", "+27838968976"));
     }
 
     @Test
-    void testRegisterUserReturnsPasswordErrorMessage() {
-        String result = login.registerUser("Kyle", "Naidoo", "kyl_1", "password", "+27838968976");
-        assertTrue(result.contains("Password is not correctly formatted"));
+    void registerUserBadUsername() {
+        assertEquals("Username is not correctly formatted, please ensure that your username "
+                        + "contains an underscore and is no more than five characters in length.",
+                login.registerUser("Kyle", "Smith", "kyle!!!!!!", "Ch&&sec@ke99!", "+27838968976"));
     }
 
-    // ----- Login tests -----
+    @Test
+    void registerUserBadPassword() {
+        assertEquals("Password is not correctly formatted, please ensure that the password "
+                        + "contains at least eight characters, a capital letter, a number, and a special character.",
+                login.registerUser("Kyle", "Smith", "kyl_1", "password", "+27838968976"));
+    }
 
     @Test
-    void testLoginSuccessful() {
-        login.registerUser("Kyle", "Naidoo", "kyl_1", "Ch&&sec@ke99!", "+27838968976");
+    void registerUserBadCellNumber() {
+        assertEquals("Cell phone number incorrectly formatted or does not contain international code.",
+                login.registerUser("Kyle", "Smith", "kyl_1", "Ch&&sec@ke99!", "08966553"));
+    }
+
+    // ---- Login ----
+    @Test
+    void loginSuccessful() {
+        login.registerUser("Kyle", "Smith", "kyl_1", "Ch&&sec@ke99!", "+27838968976");
         assertTrue(login.loginUser("kyl_1", "Ch&&sec@ke99!"));
+        assertEquals("Welcome Kyle Smith, it is great to see you again.",
+                login.returnLoginStatus(true));
     }
 
     @Test
-    void testLoginFailed() {
-        login.registerUser("Kyle", "Naidoo", "kyl_1", "Ch&&sec@ke99!", "+27838968976");
-        assertFalse(login.loginUser("kyl_1", "wrongPassword"));
+    void loginFailedWrongPassword() {
+        login.registerUser("Kyle", "Smith", "kyl_1", "Ch&&sec@ke99!", "+27838968976");
+        assertFalse(login.loginUser("kyl_1", "wrongPass1!"));
+        assertEquals("Username or password incorrect, please try again.",
+                login.returnLoginStatus(false));
     }
 
     @Test
-    void testReturnLoginStatusSuccess() {
-        login.registerUser("Kyle", "Naidoo", "kyl_1", "Ch&&sec@ke99!", "+27838968976");
-        login.loginUser("kyl_1", "Ch&&sec@ke99!");
-        assertEquals("Welcome Kyle, Naidoo it is great to see you again.", login.returnLoginStatus());
-    }
-
-    @Test
-    void testReturnLoginStatusFailure() {
-        login.registerUser("Kyle", "Naidoo", "kyl_1", "Ch&&sec@ke99!", "+27838968976");
-        login.loginUser("kyl_1", "wrongPassword");
-        assertEquals("Username or password incorrect, please try again.", login.returnLoginStatus());
+    void loginFailedBeforeRegistering() {
+        assertFalse(login.loginUser("kyl_1", "Ch&&sec@ke99!"));
     }
 }
